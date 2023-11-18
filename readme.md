@@ -23,7 +23,7 @@ Avant de commencer, assurez-vous d'avoir les éléments suivants installés sur 
 
 ## Lancement
 
-    cd npm run start    
+   npm run start    
 
 ## Utulisation
 
