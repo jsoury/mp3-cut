@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Découper un fichier MP3</title>
+</head>
+
+<body>
+    <h1>Découper un fichier MP3</h1>
+
+    <form id="mp3CutForm" enctype="multipart/form-data">
+        <label for="mp3File">Choisir un fichier MP3 :</label>
+        <input type="file" id="mp3File" name="mp3File" accept=".mp3">
+
+        <br>
+
+         <!-- Champ pour saisir une URL YouTube -->
+        <label for="youtubeURL">YouTube URL:</label>
+        <input type="text" name="youtubeURL" id="youtubeURL" placeholder="Enter YouTube URL">
+
+        <br>
+
+        <label for="outputPath">Chemin de sortie :</label>
+        <input type="text" id="outputPath" name="outputPath" placeholder="Chemin de sortie" required>
+
+        <br>
+        <label for="segmentDuration">Durée du segment (en secondes) :</label>
+        <input type="number" name="segmentDuration" id="segmentDuration" required>
+        <br>
+
+        <button type="button" onclick="cutMP3()">Découper le fichier MP3</button>
+    </form>
+
+    <script>
+        async function cutMP3 () {
+            const mp3File = document.getElementById('mp3File').files[0];
+            const youtubeURL = document.getElementById('youtubeURL').value;
+            const outputPath = document.getElementById('outputPath').value;
+            const segmentDuration = document.getElementById('segmentDuration').value;           
+
+            if (!outputPath) {
+                alert('Veuillez saisir un chemin de sortie.');
+                return;
+            }
+            if (!segmentDuration) {
+                alert('Veuillez saisir une durée de segment');
+                return;
+            }
+
+            const formData = new FormData();
+            mp3File ? formData.append('mp3File', mp3File) : formData.append('youtubeURL', youtubeURL);            
+            formData.append('outputPath', outputPath);
+            formData.append('segmentDuration', segmentDuration);
+
+            try {
+                const response = await fetch('http://localhost:3000/cut-mp3', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                if (response.ok) {
+                    alert('Fichier MP3 découpé avec succès !');
+                } else {
+                    alert('Erreur lors du découpage du fichier MP3.');
+                }
+            } catch (error) {
+                console.error('Erreur lors de la requête :', error);
+            }
+        }
+    </script>
+</body>
+
+</html>
