@@ -1,6 +1,8 @@
 # Découpage de MP3
+> **Important notice:** This application is under development and doesn't completely ready.
 
-Ce projet vous permet de découper un fichier MP3 en segments plus petits.
+[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fjsoury%2Fmp3-cut%2Fhit-counter&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
+
 
 ## Prérequis
 
@@ -18,12 +20,13 @@ Avant de commencer, assurez-vous d'avoir les éléments suivants installés sur 
 
 2. **Installez les dépendances:**
 
-    ```bash 
+    ```
     cd server npm install 
 
 ## Lancement
 
-    cd npm run start    
+    
+    npm run start    
 
 ## Utulisation
 

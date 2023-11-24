@@ -20,13 +20,20 @@ function getMetadata(inputFilePath) {
     });
 }
 
+const removeEmojis = (text) => {
+    if (!text) {
+        return '';
+    }
+    return text.replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '');
+}
+
 // Fonction pour télécharger une vidéo YouTube
 async function downloadYoutube(youtubeURL) {
     const videoInfo = await ytdl.getInfo(youtubeURL);
-    console.log("videoInfo", videoInfo);
     const videoFormat = ytdl.chooseFormat(videoInfo.formats, { quality: 'highestaudio' });
-    console.log(videoInfo.videoDetails.title);
-    const title = videoInfo.videoDetails.title.replace(/[!|@#$%^&*]/g, "").replace(/[^\w_ ]/, "").replaceAll(" ", "_");
+    let title = removeEmojis(videoInfo.videoDetails.title);    
+    title = title.replace(/[!|@#$%^&*]/g, "").replace(/[^\w_ ]/, "").replaceAll(" ", "_").replaceAll("__", "_").replaceAll("\"","");
+    
     console.log(title);
     const inputFilePath = path.join(__dirname, `${title}.mp3`);
 
@@ -40,13 +47,10 @@ async function downloadYoutube(youtubeURL) {
 // Fonction pour découper le fichier MP3 en segments
 async function cutMP3IntoSegments (inputFilePath, outputDirectory, segmentDuration) {
     const metadata = await getMetadata(inputFilePath)
-    console.log(metadata);
 
     const totalSegments = Math.ceil(metadata.format.duration / segmentDuration);
     const segmentName = metadata.format.filename.split('\\').pop().replace(/\.[^/.]+$/, '');
-    console.log("segmentName",segmentName);
     for (let i = 0; i < totalSegments; i++) {
-        console.log(i);
         const startTime = i === 0 ? 0 : i * segmentDuration;
 
         ffmpeg(inputFilePath)

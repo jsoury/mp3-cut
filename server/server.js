@@ -12,9 +12,7 @@ app.use(express.static('public'));
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-app.post('/cut-mp3', upload.single('mp3File'), async (req, res) => {
-    console.log("post", req.file)
-    console.log('body', req.body);
+app.post('/cut-mp3', upload.single('mp3File'), async (req, res) => {  
     
     const outputPath = req.body.outputPath;
     const segmentDuration = req.body.segmentDuration;
